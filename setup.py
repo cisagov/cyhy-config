@@ -77,6 +77,7 @@ setup(
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: Implementation :: CPython",
     ],
     python_requires=">=3.11",
@@ -93,10 +94,10 @@ setup(
         "setuptools",
     ],
     extras_require={
-        # IMPORTANT: Keep type hinting-related dependencies of the 'dev' section
+        # IMPORTANT: Keep type hinting-related dependencies of the dev section
         # in sync with the mypy pre-commit hook configuration (see
         # .pre-commit-config.yaml). Any changes to type hinting-related
-        # dependencies here should be reflected in the 'additional_dependencies'
+        # dependencies here should be reflected in the additional_dependencies
         # field of the mypy pre-commit hook to avoid discrepancies in type
         # checking between environments.
         "dev": [

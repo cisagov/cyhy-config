@@ -162,7 +162,6 @@ repos:
         # checking between environments.
         additional_dependencies:
           - boto3-stubs
-          - pydantic
           - pydantic-settings
           - types-setuptools
   - repo: https://github.com/pypa/pip-audit

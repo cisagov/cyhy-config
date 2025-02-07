@@ -1,4 +1,3 @@
-#!/usr/bin/env pytest -vs
 """Tests for cyhy_config."""
 
 # Standard Python Libraries

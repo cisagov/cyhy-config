@@ -5,8 +5,6 @@ Status](https://github.com/cisagov/cyhy-config/workflows/build/badge.svg)](https
 [![CodeQL](https://github.com/cisagov/cyhy-config/workflows/CodeQL/badge.svg)](https://github.com/cisagov/cyhy-config/actions/workflows/codeql-analysis.yml)
 [![Coverage
 Status](https://coveralls.io/repos/github/cisagov/cyhy-config/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/cyhy-config?branch=develop)
-[![Known
-Vulnerabilities](https://snyk.io/test/github/cisagov/cyhy-config/develop/badge.svg)](https://snyk.io/test/github/cisagov/cyhy-config)
 
 This repository implements a Python module for reading [TOML](https://toml.io)
 configuration files used by various Cyber Hygiene components.  It will discover,

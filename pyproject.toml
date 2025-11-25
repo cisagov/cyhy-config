@@ -61,9 +61,6 @@ test = [
     "pytest",
 ]
 
-[project.scripts]
-example = "example.example:main"
-
 [project.urls]
 homepage = "https://github.com/cisagov/cyhy-config"
 issues = "https://github.com/cisagov/cyhy-config/issues"

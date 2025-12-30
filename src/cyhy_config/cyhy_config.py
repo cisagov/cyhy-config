@@ -18,7 +18,7 @@ from os import environ
 from pathlib import Path
 import pprint
 import tomllib
-from typing import Literal, Optional, Type, TypeVar, overload
+from typing import Literal, TypeVar, overload
 
 # Third-Party Libraries
 from boto3 import client
@@ -47,8 +47,8 @@ T = TypeVar("T", bound=BaseModel)
 @overload
 def get_config(
     *,
-    file_path: Optional[str] = ...,
-    ssm_path: Optional[str] = ...,
+    file_path: str | None = ...,
+    ssm_path: str | None = ...,
     model: Literal[None],
 ) -> dict:
     pass  # pragma: no cover
@@ -57,17 +57,17 @@ def get_config(
 @overload
 def get_config(
     *,
-    file_path: Optional[str] = ...,
-    ssm_path: Optional[str] = ...,
-    model: Type[T],
+    file_path: str | None = ...,
+    ssm_path: str | None = ...,
+    model: type[T],
 ) -> T:
     pass  # pragma: no cover
 
 
 def get_config(
-    file_path: Optional[str] = None,
-    ssm_path: Optional[str] = None,
-    model: Optional[Type[T]] = None,
+    file_path: str | None = None,
+    ssm_path: str | None = None,
+    model: type[T] | None = None,
 ) -> T | dict:
     """Get the CyHy configuration."""
     # First we try to find the configuration file in SSM
@@ -82,7 +82,7 @@ def get_config(
     return read_config_file(config_file_path, model)
 
 
-def find_config_file(file_path: Optional[str] = None) -> Path:
+def find_config_file(file_path: str | None = None) -> Path:
     """Find a CyHy configuration file.
 
     Args:
@@ -146,7 +146,7 @@ def find_config_file(file_path: Optional[str] = None) -> Path:
 
 
 def read_config_ssm(
-    ssm_path: Optional[str] = None, model: Optional[Type[T]] = None
+    ssm_path: str | None = None, model: type[T] | None = None
 ) -> T | dict | None:
     """Read the configuration from SSM and return its contents as a dictionary."""
     ssm_paths = [
@@ -181,7 +181,7 @@ def read_config_ssm(
     return None
 
 
-def read_config_file(config_file: Path, model: Optional[Type[T]] = None) -> T | dict:
+def read_config_file(config_file: Path, model: type[T] | None = None) -> T | dict:
     """Read the configuration file and return its contents as a dictionary."""
     if not os.path.isfile(config_file):
         logger.error("Config file not found: %s", config_file)
@@ -198,7 +198,7 @@ def read_config_file(config_file: Path, model: Optional[Type[T]] = None) -> T | 
     return validate_config(config_dict, model)
 
 
-def validate_config(config_dict: dict, model: Optional[Type[T]]) -> T | dict:
+def validate_config(config_dict: dict, model: type[T] | None) -> T | dict:
     """Validate the configuration against the model."""
     if not model:
         logger.info("No model provided, returning config as a dictionary.")

@@ -37,7 +37,7 @@ will be raised.
 ## Environment Variables ##
 
 | Variable | Description |
-|----------|-------------|
+| -------- | ----------- |
 | `CYHY_CONFIG_PATH` | The path to the configuration file. |
 | `CYHY_CONFIG_SSM_PATH` | The path to the configuration file in AWS SSM. |
 

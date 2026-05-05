@@ -68,7 +68,7 @@ def test_find_config_file_env_var_set():
 
 
 def test_find_config_file_env_var_set_but_does_not_exist():
-    """Test find_config_file when the CYHY_CONFIG_PATH environment variable is set but does not exist."""
+    """Test find_config_file when CYHY_CONFIG_PATH env var is set but does not exist."""
     with patch.dict(os.environ, {CYHY_CONFIG_PATH_ENV: "/mock/env/path"}):
         with patch("cyhy_config.cyhy_config.Path.exists", side_effect=[False, True]):
             assert find_config_file() == CONFIG_PATH_CWD
@@ -81,7 +81,7 @@ def test_find_config_file_in_current_directory():
 
 
 def test_find_config_file_in_home_directory():
-    """Test find_config_file when the cyhy.toml file exists in the user's home directory."""
+    """Test find_config_file when the cyhy.toml file exists in user's home dir."""
     with patch("cyhy_config.cyhy_config.Path.exists", side_effect=[False, True]):
         assert find_config_file() == CONFIG_PATH_HOME
 
@@ -100,7 +100,7 @@ def test_find_config_file_no_valid_path():
 
 
 def test_read_config_ssm_env_var_set():
-    """Test read_config_ssm when the CYHY_CONFIG_SSM_PATH environment variable is set."""
+    """Test read_config_ssm when the CYHY_CONFIG_SSM_PATH env var is set."""
     mock_ssm_client = MagicMock()
     mock_ssm_client.get_parameter.return_value = {
         "Parameter": {"Value": 'key = "value"'}
@@ -125,7 +125,7 @@ def test_read_config_ssm_parameter_not_found():
 
 
 def test_read_config_ssm_other_client_error():
-    """Test read_config_ssm when SSM responds with an error code other than ParameterNotFound."""
+    """Test read_config_ssm when SSM responds with non-ParameterNotFound error code."""
     mock_ssm_client = MagicMock()
     mock_ssm_client.get_parameter.side_effect = ClientError(
         {"Error": {"Code": "SchrödingersParameterError"}}, "get_parameter"

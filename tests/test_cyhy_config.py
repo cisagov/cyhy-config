@@ -124,6 +124,42 @@ def test_read_config_ssm_parameter_not_found():
             assert read_config_ssm() is None
 
 
+def test_read_config_ssm_falls_back_to_env_var():
+    """Test read_config_ssm tries the env var when the given path is not in SSM."""
+    good_path = "/mock/ssm/good_path"
+
+    def get_parameter(Name, WithDecryption=False):
+        if Name == good_path:
+            return {"Parameter": {"Value": 'key = "value"'}}
+        raise ClientError({"Error": {"Code": "ParameterNotFound"}}, "get_parameter")
+
+    mock_ssm_client = MagicMock()
+    mock_ssm_client.get_parameter.side_effect = get_parameter
+
+    with patch("cyhy_config.cyhy_config.client", return_value=mock_ssm_client):
+        with patch.dict(os.environ, {CYHY_CONFIG_SSM_PATH_ENV: good_path}):
+            config = read_config_ssm("/mock/ssm/bad_path", model=TestModel)
+            assert config.key == "value"
+
+    # Both sources should have been consulted, in the documented order.
+    queried = [
+        call.kwargs["Name"] for call in mock_ssm_client.get_parameter.call_args_list
+    ]
+    assert queried == ["/mock/ssm/bad_path", good_path]
+
+
+def test_read_config_ssm_no_source_found():
+    """Test read_config_ssm returns None when no source has the parameter."""
+    mock_ssm_client = MagicMock()
+    mock_ssm_client.get_parameter.side_effect = ClientError(
+        {"Error": {"Code": "ParameterNotFound"}}, "get_parameter"
+    )
+
+    with patch("cyhy_config.cyhy_config.client", return_value=mock_ssm_client):
+        with patch.dict(os.environ, {CYHY_CONFIG_SSM_PATH_ENV: "/mock/ssm/also_bad"}):
+            assert read_config_ssm("/mock/ssm/bad_path") is None
+
+
 def test_read_config_ssm_other_client_error():
     """Test read_config_ssm when SSM responds with non-ParameterNotFound error code."""
     mock_ssm_client = MagicMock()

@@ -163,7 +163,11 @@ def read_config_ssm(
             except ClientError as e:
                 if e.response["Error"]["Code"] == "ParameterNotFound":
                     logger.warning("SSM parameter not found: %s", path)
-                    return None
+                    # Try the next source rather than giving up. Returning here
+                    # skipped the environment variable whenever an explicit path
+                    # was passed but not present in SSM. The function still
+                    # returns None once every source has been tried.
+                    continue
                 else:
                     logger.error(e)
                     raise e
